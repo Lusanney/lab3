@@ -6,6 +6,7 @@ app_name = "hotel_app"
 urlpatterns = [
     # Visitors CRUD
     path('visitors/', VisitorListView.as_view()),
+    path('visitors/create', VisitorSingleCreateView.as_view()),
     path('visitors/<int:pk>', VisitorSingleRetrieveView.as_view()),
     path('visitors/<int:pk>/update', VisitorSingleUpdateView.as_view()),
     path('visitors/<int:pk>/destroy', VisitorSingleDestroyView.as_view()),
@@ -14,6 +15,7 @@ urlpatterns = [
 
     # Hosts CRUD
     path('hosts/', HostListView.as_view()),
+    path('hosts/create', HostSingleCreateView.as_view()),
     path('hosts/<int:pk>', HostSingleRetrieveView.as_view()),
     path('hosts/<int:pk>/update', HostSingleUpdateView.as_view()),
     path('hosts/<int:pk>/destroy', HostSingleDestroyView.as_view()),

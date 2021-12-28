@@ -65,7 +65,7 @@ class Room(models.Model):
         return "Room: {} of Hotel: {}".format(self.number, self.hotel.name)
 
 class Booking(models.Model):
-    booking_code = models.CharField(max_length=10, blank=False, verbose_name='Booking Code')
+    booking_code = models.CharField(max_length=30, blank=False, verbose_name='Booking Code')
     date_checkin = models.DateField(default=django.utils.timezone.now, verbose_name='Date Checkin')
     date_checkout = models.DateField(default=django.utils.timezone.now, verbose_name='Date Checkout')
     main_guest = models.ForeignKey(Visitor, related_name='bookings', null=True, verbose_name='Main guest', on_delete=models.DO_NOTHING)

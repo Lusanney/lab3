@@ -1,6 +1,7 @@
 import sys
 from rest_framework import generics
 from rest_framework.views import APIView, Response
+import shortuuid
 
 from .serializers import *
 from .models import *
@@ -9,6 +10,9 @@ from .models import *
 class VisitorListView(generics.ListAPIView):
     serializer_class = VisitorSerializer
     queryset = Visitor.objects.all()
+
+class VisitorSingleCreateView(generics.CreateAPIView):
+    serializer_class = VisitorCreateSerializer
 
 class VisitorSingleRetrieveView(generics.RetrieveAPIView):
     serializer_class = VisitorSerializer
@@ -28,6 +32,9 @@ class VisitorSingleDestroyView(generics.DestroyAPIView):
 class HostListView(generics.ListAPIView):
     serializer_class = HostSerializer
     queryset = Host.objects.all()
+
+class HostSingleCreateView(generics.CreateAPIView):
+    serializer_class = HostCreateSerializer
 
 class HostSingleRetrieveView(generics.RetrieveAPIView):
     serializer_class = HostSerializer
@@ -93,9 +100,36 @@ class BookingListView(generics.ListAPIView):
     serializer_class = BookingSerializer
     queryset = Booking.objects.all()
 
-class BookingSingleCreateView(generics.CreateAPIView):
-    serializer_class = BookingSerializer
-    queryset = Booking.objects.all()
+class BookingSingleCreateView(APIView):
+    def post(self, request):
+        rawBooking = {}
+        rawBooking['booking_code'] = shortuuid.ShortUUID().random(length=7)
+        rawBooking['date_checkin'] = request.data.get('date_checkin')
+        rawBooking['date_checkout'] = request.data.get('date_checkout')
+        rawBooking['main_guest'] = request.data.get('main_guest')
+        rawBooking['room'] = request.data.get('room')
+
+        bookingSerializer = BookingCreateSerializer(data=rawBooking)
+
+        if bookingSerializer.is_valid(raise_exception=True):
+            booking = bookingSerializer.save()
+            serializedBooking = BookingSerializer(booking)
+
+            # initialize bill
+            rawBill = {}
+            rawBill['service_name'] = 'Stay'
+            rawBill['description'] = 'stay cost'
+            room = Room.objects.get(pk=booking.room.id)
+            rawBill['total'] = room.price
+            rawBill['booking'] = booking.id
+
+            billSerializer = BillSerializer(data=rawBill)
+            if billSerializer.is_valid(raise_exception=True):
+                bill = billSerializer.save()
+            
+            
+        return Response(serializedBooking.data)
+        
 
 class BookingSingleRetrieveView(generics.RetrieveAPIView):
     serializer_class = BookingSerializer
@@ -150,7 +184,7 @@ class BookingReportView(APIView):
         total_days = booking.date_checkout - booking.date_checkin
 
         bookingSerializer = BookingBillSerializer(booking)
-        return Response({"Booking": bookingSerializer.data, "Report": { "total_price": total_price, "total_days": total_days.days}})
+        return Response({"Booking": bookingSerializer.data, "Report": { "total_price": total_price, "total_days": total_days.days + 1}})
 
 class HotelInfoView(APIView):
     def get(self, request, pk):

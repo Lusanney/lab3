@@ -6,10 +6,25 @@ class VisitorSerializer(serializers.ModelSerializer):
         model = Visitor
         fields = ['username', 'first_name', 'last_name', 'email', 'phone', 'sex', 'nationality', 'passport_no']
 
+class VisitorCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Visitor
+        fields = ['username', 'password', 'first_name', 'last_name', 'id']
+
+    def create(self, validated_data):
+        visitor = Visitor(username=validated_data['username'], first_name=validated_data['first_name'], last_name=validated_data['last_name'])
+        visitor.set_password(validated_data['password'])
+        visitor.save()
+        return visitor
 class HostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Host
         fields = ['username', 'first_name', 'last_name', 'email', 'phone', 'sex', 'license', 'workExp']
+
+class HostCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Host
+        fields = ['username', 'password']
 
 class HotelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,6 +41,11 @@ class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = "__all__"
+
+class BookingCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = ['date_checkin', 'date_checkout', 'main_guest', 'room', 'booking_code']
 
 class BillSerializer(serializers.ModelSerializer):
     class Meta:
