@@ -1,6 +1,8 @@
 import sys
 from rest_framework import generics
 from rest_framework.views import APIView, Response
+from rest_framework.permissions import AllowAny
+
 import shortuuid
 
 from .serializers import *
@@ -13,6 +15,7 @@ class VisitorListView(generics.ListAPIView):
 
 class VisitorSingleCreateView(generics.CreateAPIView):
     serializer_class = VisitorCreateSerializer
+    permission_classes  = [AllowAny]
 
 class VisitorSingleRetrieveView(generics.RetrieveAPIView):
     serializer_class = VisitorSerializer
