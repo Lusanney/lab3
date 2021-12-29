@@ -7,6 +7,7 @@ nav:
     - "/bookings/:id": api/bookings/bookings_retrieve.md
     - "/bookings/:id/update": api/bookings/bookings_update.md
     - "/bookings/:id/destroy": api/bookings/bookings_destroy.md
+    - "/bookings/:id/report": api/bookings/bookings_report.md
 
     - "/bills/create": api/bills/bills_create.md
     - "/bills": api/bills/bills_list.md
@@ -24,6 +25,9 @@ nav:
     - "/hotels/:id": api/hotels/hotels_retrieve.md
     - "/hotels/:id/update": api/hotels/hotels_update.md
     - "/hotels/:id/destroy": api/hotels/hotels_destroy.md
+    - "/hotels/:id/info": api/hotels/hotels_info.md
+    - "/hotels/room": api/hotels/hotels_room.md
+    - "/hotels/room/available": api/hotels/hotels_room_available.md
 
     - "/rooms/create": api/rooms/rooms_create.md
     - "/rooms": api/rooms/rooms_list.md
@@ -35,7 +39,13 @@ nav:
     - "/visitors/:id": api/visitors/visitors_retrieve.md
     - "/visitors/:id/update": api/visitors/visitors_update.md
     - "/visitors/:id/destroy": api/visitors/visitors_destroy.md
-
+    - "/visitors/:id/bookings": api/visitors/visitors_bookings.md
+  - Client:
+    - "Client Introduction": client/introduction.md
+    - "Auth-related Pages": client/auths.md
+    - "Room Page": client/rooms.md
+    - "Hotel Page": client/hotels.md
+    - "My booking Page": client/bookings.md
 
 
 
